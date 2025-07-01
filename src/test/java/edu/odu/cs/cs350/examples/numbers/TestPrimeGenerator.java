@@ -61,19 +61,14 @@ public class TestPrimeGenerator
     @Test
     public void testDefaultConstructor()
     {
-        // public int getLast()
         assertThat(generator.getLast(), is(3));
 
-        // public final List<Integer> getPrimes()
         assertThat(generator.getPrimes(), equalTo(FIRST_2_PRIMES));
-
-        // public int numberOfPrimes()
         assertThat(generator.numberOfPrimes(), is(2));
 
         // handled later - public boolean equals(Object rhs)
         // handled later - public int hashCode()
 
-        // public String toString()
         assertThat(generator.toString(), containsString("2"));
         assertThat(generator.toString(), containsString("3"));
     }
@@ -81,7 +76,6 @@ public class TestPrimeGenerator
     @Test
     public void testDefaultConstructorWithIterator()
     {
-        // public Iterator<Integer> iterator()
         Iterator<Integer> primeIt = generator.iterator();
         int aPrime = -1;
 
@@ -99,17 +93,10 @@ public class TestPrimeGenerator
     {
         PrimeGenerator seededGenerator = seededWith5;
 
-        // public int getLast()
         assertThat(seededGenerator.getLast(), is(11));
-
-        // public final List<Integer> getPrimes()
         assertThat(seededGenerator.getPrimes(), equalTo(FIRST_5_PRIMES));
-
-        // public int numberOfPrimes()
         assertThat(seededGenerator.numberOfPrimes(), is(5));
 
-        // public String toString()
-        // A better option - Check for substrings in order
         List<String> primesAsStrings = Arrays.asList("2", "3", "5", "7", "11");
         assertThat(seededGenerator.toString(),
                    stringContainsInOrder(primesAsStrings));
@@ -118,21 +105,18 @@ public class TestPrimeGenerator
     @Test
     public void testConstructorsWithEquals()
     {
-        // public boolean equals(Object rhs)
         assertThat(seededWith5, not(equalTo(generator)));
     }
 
     @Test
     public void testConstructorsWithHashCode()
     {
-        // public int hashCode()
         assertThat(seededWith5.hashCode(), not(equalTo(generator.hashCode())));
     }
 
     @Test
     public void testNonDefaultConstructor1WithIterator()
     {
-        // public Iterator<Integer> iterator()
         Iterator<Integer> primeIt = seededWith5.iterator();
         int aPrime = -1;
 
@@ -166,22 +150,9 @@ public class TestPrimeGenerator
         generator.next();
         assertThat(generator.getLast(), is(11));
 
-        // public final List<Integer> getPrimes()
         assertThat(generator.getPrimes(), equalTo(FIRST_5_PRIMES));
-        // ! - mistake in test contains vs equals
 
-        // public Iterator<Integer> iterator() - Causing Problems...
-        // int[] expectedPrimes = new int[]{2, 3, 5, 7, 11};
-        // Iterator<Integer> it = generator.iterator();
-
-        // for (int expectedPrime : expectedPrimes) {
-            // assertTrue(it.hasNext());
-            // assertThat(it.next().intValue(), is(expectedPrime));
-            // it.next(); // This was the issue!
-        // }
-        // assertFalse(it.hasNext());
-
-        // public Iterator<Integer> iterator() - Better... Why?
+        // Iterator Test
         Iterator<Integer> it = generator.iterator();
 
         assertTrue(it.hasNext());
@@ -199,18 +170,15 @@ public class TestPrimeGenerator
         assertTrue(it.hasNext());
         assertThat(it.next().intValue(), is(11));
 
+        // There should not be any primes left.
         assertFalse(it.hasNext());
+        // End Iterator Test
 
-        // public int numberOfPrimes()
         assertThat(generator.numberOfPrimes(), is(5));
 
-        // public boolean equals(Object rhs)
         assertThat(generator, is(equalTo(seededWith5)));
-
-        // public int hashCode()
         assertThat(generator.hashCode(), is(equalTo(seededWith5.hashCode())));
 
-        // public String toString()
         assertThat(generator.toString(), is(equalTo(seededWith5.toString())));
     }
 
@@ -225,27 +193,23 @@ public class TestPrimeGenerator
         anotherGenerator.nextFew(2);
         assertThat(anotherGenerator.getLast(), is(17));
 
-        // public final List<Integer> getPrimes()
         List<Integer> expectedPrimes = null;
         expectedPrimes = Arrays.asList(2, 3, 5, 7, 11, 13, 17);
 
         assertThat(anotherGenerator.getPrimes(), equalTo(expectedPrimes));
-
-        // public int numberOfPrimes()
         assertThat(anotherGenerator.numberOfPrimes(), is(7));
 
-        // public boolean equals(Object rhs)
+        // Equals and Hash Code
         assertThat(anotherGenerator, not(equalTo(generator)));
         assertThat(anotherGenerator, not(equalTo(seededWith5)));
 
-        // public int hashCode()
         assertThat(anotherGenerator.hashCode(),
                    not(equalTo(generator.hashCode())));
 
         assertThat(anotherGenerator.hashCode(),
                    not(equalTo(seededWith5.hashCode())));
 
-        // public String toString()
+        // toString()
         List<String> expectedStrings = expectedPrimes.stream()
                                                        .map(p -> p.toString())
                                                        .collect(toList());
@@ -253,7 +217,7 @@ public class TestPrimeGenerator
         assertThat(anotherGenerator.toString(),
                    stringContainsInOrder(expectedStrings));
 
-        // public Iterator<Integer> iterator()
+        // A quicker set of iterator tests
         Iterator<Integer> primeIt = anotherGenerator.iterator();
 
         assertThat(primeIt.next().intValue(), is(2));
@@ -268,7 +232,7 @@ public class TestPrimeGenerator
         assertThat(primeIt.hasNext(), is(false));
     }
 
-    // Reference - Need to check
+    // ------------------------Reference - Need to Check------------------------
     // public int getLast()
     // public final List<Integer> getPrimes()
     // public Iterator<Integer> iterator()
@@ -276,4 +240,16 @@ public class TestPrimeGenerator
     // public boolean equals(Object rhs)
     // public int hashCode()
     // public String toString()
+
+    /*
+     * -----------------------------Closing Remarks-----------------------------
+     *
+     * 1. What if I added a clone function?
+     * 2. Can I improve my tests?
+     *   a. methodology
+     *   b. size
+     *   c. readability
+     *   d. D.R.Y - Do not Repeat Yourself (i.e., code duplication)
+     * 3. What lessons did we learn?
+     */
 }
