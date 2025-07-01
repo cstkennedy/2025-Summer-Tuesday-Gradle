@@ -38,7 +38,7 @@ public class PrimeGenerator implements Iterable<Integer> {
      */
     public PrimeGenerator(List<Integer> knownPrimes)
     {
-        // To Be Written (TBW)
+        primes = new ArrayList(knownPrimes);
     }
 
     /**
@@ -87,7 +87,9 @@ public class PrimeGenerator implements Iterable<Integer> {
      */
     public void nextFew(int toGenerate)
     {
-        // TBW
+        for (int i = 0; i < toGenerate; i++) {
+            this.next();
+        }
     }
 
     /**
@@ -138,7 +140,13 @@ public class PrimeGenerator implements Iterable<Integer> {
     @Override
     public boolean equals(Object rhs)
     {
-        return false;
+        if (!(rhs instanceof PrimeGenerator)) {
+            return false;
+        }
+
+        PrimeGenerator rhsGen = (PrimeGenerator) rhs;
+
+        return this.numberOfPrimes() == rhsGen.numberOfPrimes();
     }
 
     /**
@@ -147,7 +155,7 @@ public class PrimeGenerator implements Iterable<Integer> {
     @Override
     public int hashCode()
     {
-        return -1;
+        return this.numberOfPrimes() * 4;
     }
 
     /**
@@ -156,6 +164,14 @@ public class PrimeGenerator implements Iterable<Integer> {
     @Override
     public String toString()
     {
-        return "Not Implemented";
+        StringBuilder bld = new StringBuilder();
+
+        bld.append(primes.get(0));
+        for (int i = 1; i < this.numberOfPrimes(); i++) {
+            bld.append(", ");
+            bld.append(primes.get(i));
+        }
+
+        return bld.toString();
     }
 }
