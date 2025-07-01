@@ -5,6 +5,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
 
@@ -36,52 +37,16 @@ public class TestPrimeGenerator
     }
 
     @Test
-    public void testPlaceholder()
-    {
-        fail("I did not write anything yet");
-    }
-
-    //--------------------------------------------------------------------------
-    /*
-      # Functions to Use in Tests
-
-      public PrimeGenerator()
-      public PrimeGenerator(List<Integer> knownPrimes)
-      public void next()
-      public void nextFew(int toGenerate)
-      public int getLast()
-      public final List<Integer> getPrimes()
-      public Iterator<Integer> iterator()
-      public int numberOfPrimes()
-      public boolean equals(Object rhs)
-      public int hashCode()
-      public String toString()
-    */
-    //--------------------------------------------------------------------------
-    /*
-      # Mutators vs Accessors
-
-      | **Type** | **Return Type**   | **Function**                              |
-      | :------  | :---------------- | :-------------                            |
-      | Mutator  | Constructor       | PrimeGenerator()                          |
-      | Mutator  | Constructor       | PrimeGenerator(List<Integer> knownPrimes) |
-      | Mutator  | void              | next()                                    |
-      | Mutator  | void              | nextFew(int toGenerate)                   |
-      | Accessor | int               | getLast()                                 |
-      | Accessor | List<Integer>     | getPrimes()                               |
-      | Accessor | Iterator<Integer> | iterator()                                |
-      | Accessor | int               | numberOfPrimes()                          |
-      | Accessor | boolean           | equals(Object rhs)                        |
-      | Accessor | int               | hashCode()                                |
-      | Accessor | String            | toString()                                |
-    */
-
-    @Test
     public void testDefaultConstructor()
     {
-        fail("TBW");
-        // Need to check
+        PrimeGenerator generator = new PrimeGenerator();
+
         // public int getLast()
+        assertEquals(3, generator.getLast());
+        assertThat(generator.getLast(), is(equalTo(3)));
+        assertThat(generator.getLast(), equalTo(3));
+        assertThat(generator.getLast(), is(3));
+
         // public final List<Integer> getPrimes()
         // public Iterator<Integer> iterator()
         // public int numberOfPrimes()
@@ -93,12 +58,30 @@ public class TestPrimeGenerator
     @Test
     public void testNonDefaultConstructor1()
     {
-        fail("TBW");
-        // Need to check
+        List<Integer> knownPrimes = Arrays.asList(2, 3, 5, 7, 11);
+        PrimeGenerator seededGenerator = new PrimeGenerator(knownPrimes);
+
         // public int getLast()
+        assertThat(seededGenerator.getLast(), is(11));
+
         // public final List<Integer> getPrimes()
+        assertThat(seededGenerator.getPrimes(), contains(knownPrimes.get(0),
+                                                         knownPrimes.get(1),
+                                                         knownPrimes.get(2),
+                                                         knownPrimes.get(3),
+                                                         knownPrimes.get(4)));
+        // Of Course, there is the lazy method...
+        assertThat(seededGenerator.getPrimes(), equalTo(knownPrimes));
+        assertEquals(seededGenerator.getPrimes(), knownPrimes);
+        assertTrue(seededGenerator.getPrimes().equals(knownPrimes));
+
         // public Iterator<Integer> iterator()
+        // ??????
+        // ??????
+        // ??????
+
         // public int numberOfPrimes()
+
         // public boolean equals(Object rhs)
         // public int hashCode()
         // public String toString()
@@ -107,9 +90,14 @@ public class TestPrimeGenerator
     @Test
     public void testNext()
     {
-        fail("TBW");
-        // Need to check
-        // public int getLast()
+        PrimeGenerator generator = new PrimeGenerator();
+
+        generator.next();
+        assertThat(generator.getLast(), is(5));
+
+        generator.next();
+        assertThat(generator.getLast(), is(7));
+
         // public final List<Integer> getPrimes()
         // public Iterator<Integer> iterator()
         // public int numberOfPrimes()
@@ -121,9 +109,11 @@ public class TestPrimeGenerator
     @Test
     public void testNextFew()
     {
-        fail("TBW");
-        // Need to check
-        // public int getLast()
+        PrimeGenerator generator = new PrimeGenerator();
+
+        generator.nextFew(3);
+        assertThat(generator.getLast(), is(11));
+
         // public final List<Integer> getPrimes()
         // public Iterator<Integer> iterator()
         // public int numberOfPrimes()
@@ -131,4 +121,13 @@ public class TestPrimeGenerator
         // public int hashCode()
         // public String toString()
     }
+
+    // Reference - Need to check
+    // public int getLast()
+    // public final List<Integer> getPrimes()
+    // public Iterator<Integer> iterator()
+    // public int numberOfPrimes()
+    // public boolean equals(Object rhs)
+    // public int hashCode()
+    // public String toString()
 }
