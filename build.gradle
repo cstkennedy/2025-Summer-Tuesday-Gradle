@@ -9,6 +9,7 @@ plugins {
     id "jvm-test-suite"
 
     id "jacoco"
+    id "jacoco-report-aggregation"
 }
 
 java {
@@ -31,8 +32,28 @@ dependencies {
 
 testing {
     suites {
-        test {
+        configureEach {
             useJUnitJupiter()
+        }
+
+        test {
+            // Configure each now handles all of our setup
+        }
+
+        integrationTest(JvmTestSuite) {
+            dependencies {
+                implementation project()
+                implementation "org.junit.jupiter:junit-jupiter:5.8.2"
+                implementation "org.hamcrest:hamcrest-library:2.2"
+            }
+
+            targets {
+                all {
+                    testTask.configure {
+                        shouldRunAfter(test)
+                    }
+                }
+            }
         }
     }
 }
@@ -47,8 +68,40 @@ test {
     finalizedBy jacocoTestReport
 }
 
+integrationTest {
+    ignoreFailures = true
+
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+
+    finalizedBy integrationTestCodeCoverageReport
+}
+
+
+// Update "check" task to include integration test set
+tasks.named("check") {
+    dependsOn(testing.suites.integrationTest)
+}
+
+//------------------------------------------------------------------------------
+// Documentation Tool(s)
+//------------------------------------------------------------------------------
+javadoc {
+    failOnError = false
+}
+
+//------------------------------------------------------------------------------
+// Analysis Tool(s)
+//------------------------------------------------------------------------------
 jacoco {
     toolVersion = "0.8.13"
+}
+
+jacocoTestReport {
+    reports {
+        html.required = true
+    }
 }
 
 
